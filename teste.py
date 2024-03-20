@@ -1,5 +1,7 @@
+#!/usr/bin/python
+#-*-coding: utf-8-*-
+
 import socket
-import subprocess
 import os
 
 def get_dns_service():
@@ -20,25 +22,21 @@ def get_web_service():
 def capture_traffic():
     # Captura o tráfego gerado ao testar se os serviços estão funcionando corretamente
     filename = "traffic_capture.pcap"
-    proc = subprocess.Popen(["sudo", "tcpdump", "-i", "any", "-w", filename, "host", "exemplo.psi.br"])
-
-    # Aguarda até que o processo de captura seja concluído
-    proc.communicate()
-
-    print(f"Captura de tráfego concluída. Arquivo: {filename}")
+    os.system(f"sudo tcpdump -i any -w {filename} host exemplo.psi.br")
+    print("Captura de tráfego concluída.")
 
 def test_host_online():
     # Testa se o host está online
-    response = subprocess.run(["ping", "-c", "1", "exemplo.psi.br"], stdout=subprocess.PIPE)
-    if response.returncode == 0:
+    response = os.system("ping -c 1 exemplo.psi.br > /dev/null")
+    if response == 0:
         print("O host está online.")
     else:
         print("O host está offline.")
 
 def test_web_service(ip, port):
     # Testa se o serviço web está respondendo corretamente
-    response = subprocess.run(["curl", "-s", f"{ip}:{port}"], stdout=subprocess.PIPE)
-    if response.returncode == 0:
+    response = os.system(f"curl -s {ip}:{port} > /dev/null")
+    if response == 0:
         print("O serviço web está respondendo corretamente.")
     else:
         print("O serviço web não está respondendo corretamente.")
