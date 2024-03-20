@@ -6,14 +6,14 @@ import os
 
 def get_dns_service():
     # Realiza uma consulta DNS para determinar o endereço IP do serviço de nome
-    dns_ip = socket.gethostbyname('exemplo.psi.br')
+    dns_ip = socket.gethostbyname('192.0.2.100')
     return dns_ip
 
 def get_web_service():
     # Conecta-se ao serviço web para determinar o endereço IP e a porta
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        s.connect(('exemplo.psi.br', 80))
+        s.connect(('192.0.2.100', 80))
         web_ip, web_port = s.getpeername()
         return web_ip, web_port
     except socket.error:
@@ -24,12 +24,12 @@ def get_web_service():
 def capture_traffic():
     # Captura o tráfego gerado ao testar se os serviços estão funcionando corretamente
     filename = "traffic_capture.pcap"
-    os.system("sudo tcpdump -i any -w {0} host exemplo.psi.br".format(filename))
+    os.system("sudo tcpdump -i any -w {0} host 192.0.2.100".format(filename))
     print "Captura de tráfego concluída."
 
 def test_host_online():
     # Testa se o host está online
-    response = os.system("ping -c 1 exemplo.psi.br > /dev/null")
+    response = os.system("ping -c 1 192.0.2.100 > /dev/null")
     if response == 0:
         print "O host está online."
     else:
